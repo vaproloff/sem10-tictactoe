@@ -60,10 +60,22 @@ def check_win(screen, board, is_player):
 
 
 def bot_turn(board):
-    time.sleep(0.5)
     position = [-1, -1]
-    while not check_position(position, board):
-        position = [random.randint(0, len(board) - 1), random.randint(0, len(board[0]) - 1)]
+    for col in range(len(board)):
+        if board[col].count(True) == 2 and board[col].count(' ') == 1:
+            position = [col, board[col].index(' ')]
+            break
+    if position.count(-1):
+        for i in range(len(board)):
+            row = [board[j][i] for j in range(len(board))]
+            if row.count(True) == 2 and row.count(' ') == 1:
+                position = [i, row.index(' ')]
+                break
+
+    print(board)
+    time.sleep(0.5)
+    # while not check_position(position, board):
+    #     position = [random.randint(0, len(board) - 1), random.randint(0, len(board[0]) - 1)]
     return position
 
 

@@ -59,23 +59,51 @@ def check_win(screen, board, is_player):
         exit()
 
 
-def bot_turn(board):
-    position = [-1, -1]
+def collect_stats(board):
+    stats = []
+    positions = []
+    stats.append([board[i][i] for i in range(len(board))])
+    positions.append([[i, i] for i in range(len(board))])
+    stats.append([board[i][-i - 1] for i in range(len(board))])
+    positions.append([[i, -i + 2] for i in range(len(board))])
     for col in range(len(board)):
-        if board[col].count(True) == 2 and board[col].count(' ') == 1:
-            position = [col, board[col].index(' ')]
+        stats.append(board[col])
+        positions.append([[col, i] for i in range(len(board[col]))])
+    for i in range(len(board)):
+        stats.append([board[j][i] for j in range(len(board))])
+        positions.append([[j, i] for j in range(len(board))])
+
+    return stats, positions
+
+
+def bot_turn(board):
+    time.sleep(0.5)
+    position = [-1, -1]
+    stats, positions = collect_stats(board)
+    print(stats)
+    print(positions)
+    for i in range(len(stats)):
+        if stats[i].count(False) == 2 and stats[i].count(' ') == 1:
+            position = positions[i][stats[i].index(' ')]
             break
     if position.count(-1):
-        for i in range(len(board)):
-            row = [board[j][i] for j in range(len(board))]
-            if row.count(True) == 2 and row.count(' ') == 1:
-                position = [i, row.index(' ')]
+        for i in range(len(stats)):
+            if stats[i].count(True) == 2 and stats[i].count(' ') == 1:
+                position = positions[i][stats[i].index(' ')]
+                break
+    if position.count(-1):
+        for i in range(len(stats)):
+            if stats[i].count(True) == 1 and stats[i].count(' ') == 2:
+                position = positions[i][stats[i].index(' ')]
+                break
+    if position.count(-1):
+        for i in range(len(stats)):
+            if stats[i].count(False) == 1 and stats[i].count(' ') == 2:
+                position = positions[i][stats[i].index(' ')]
                 break
 
-    print(board)
-    time.sleep(0.5)
-    # while not check_position(position, board):
-    #     position = [random.randint(0, len(board) - 1), random.randint(0, len(board[0]) - 1)]
+    while not check_position(position, board):
+        position = [random.randint(0, len(board) - 1), random.randint(0, len(board[0]) - 1)]
     return position
 
 
@@ -102,9 +130,11 @@ def play_game(board):
                 position = click_board()
                 if check_position(position, board):
                     is_player = make_turn(screen, board, position, is_player)
+                    print(board)
             else:
                 if not is_player:
                     draw_status(screen, 'Ход бота')
                     position = bot_turn(board)
                     is_player = make_turn(screen, board, position, is_player)
+                    print(board)
                 draw_status(screen, 'Ход игрока')

@@ -80,8 +80,6 @@ def bot_turn(board):
     time.sleep(0.5)
     position = [-1, -1]
     stats, positions = collect_stats(board)
-    print(stats)
-    print(positions)
     for i in range(len(stats)):
         if stats[i].count(False) == 2 and stats[i].count(' ') == 1:
             position = positions[i][stats[i].index(' ')]
@@ -130,11 +128,9 @@ def play_game(board):
                 position = click_board()
                 if check_position(position, board):
                     is_player = make_turn(screen, board, position, is_player)
-                    print(board)
             else:
                 if not is_player:
                     draw_status(screen, 'Ход бота')
                     position = bot_turn(board)
                     is_player = make_turn(screen, board, position, is_player)
-                    print(board)
                 draw_status(screen, 'Ход игрока')

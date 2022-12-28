@@ -4,7 +4,7 @@ BOARD_WIDTH = 300
 BOARD_HEIGHT = 330
 CROSS_HALFWIDTH = 30
 CIRCLE_RADIUS = 30
-LINE_WIDTH = 2
+LINE_WIDTH = 3
 WINLINE_WIDTH = 5
 COLOR_WHITE = (255, 255, 255)
 COLOR_BLACK = (0, 0, 0)
@@ -68,7 +68,7 @@ def click_board():
 
 
 def draw_status(screen, message):
-    font = pygame.font.SysFont('couriernew', 24)
+    font = pygame.font.SysFont('couriernew', 18)
     text = font.render(message, True, COLOR_WHITE)
     pygame.draw.rect(screen, COLOR_BLACK, (0, 300, 300, 330), 0)
     screen.blit(text, (5, 300))
